@@ -1,0 +1,33 @@
+# dependencies
+node_modules
+
+# build outputs
+dist
+build
+.next
+out
+
+# turbo
+.turbo
+
+# logs
+*.log
+
+# env files
+.env
+.env.local
+.env.*.local
+
+# lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# coverage
+coverage
+
+# misc
+.DS_Store
+
+# generated files
+*.tsbuildinfo
