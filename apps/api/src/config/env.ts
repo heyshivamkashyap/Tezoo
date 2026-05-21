@@ -14,6 +14,9 @@ const envSchema = z.object({
   CORS_ORIGIN: z.string().min(1),
 
   MONGODB_URI: z.string().min(1),
+
+  ACCESS_TOKEN_SECRET: z.string().min(1),
+  REFRESH_TOKEN_SECRET: z.string().min(1),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
