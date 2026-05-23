@@ -26,8 +26,6 @@ export interface IAddress extends Document {
     type: "Point";
     coordinates: [number, number]; // [lng, lat]
   };
-
-  isDefault: boolean;
 }
 
 const addressSchema = new Schema<IAddress>(
@@ -104,11 +102,6 @@ const addressSchema = new Schema<IAddress>(
         type: [Number],
         required: true,
       },
-    },
-
-    isDefault: {
-      type: Boolean,
-      default: false,
     },
   },
   {
