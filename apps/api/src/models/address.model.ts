@@ -3,7 +3,7 @@ import { Schema, model, Types, Document } from "mongoose";
 export type AddressType = "home" | "work" | "other";
 
 export interface IAddress extends Document {
-  userId: Types.ObjectId;
+  user: Types.ObjectId;
 
   label?: string; // e.g. "Home", "Office"
   type: AddressType;
@@ -30,7 +30,7 @@ export interface IAddress extends Document {
 
 const addressSchema = new Schema<IAddress>(
   {
-    userId: {
+    user: {
       type: Types.ObjectId,
       ref: "User",
       required: true,
@@ -114,7 +114,7 @@ addressSchema.index({ location: "2dsphere" });
 
 // Ensure only one default address per user
 addressSchema.index(
-  { userId: 1, isDefault: 1 },
+  { user: 1, isDefault: 1 },
   { unique: true, partialFilterExpression: { isDefault: true } },
 );
 

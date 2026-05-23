@@ -25,7 +25,7 @@ interface IOrderItem {
 
 export interface IOrder extends Document {
   orderNo: string;
-  userId: Types.ObjectId;
+  user: Types.ObjectId;
   storeId: Types.ObjectId;
   deliveryPartnerId?: Types.ObjectId;
   items: IOrderItem[];
@@ -55,7 +55,7 @@ const orderSchema = new Schema<IOrder>(
       uppercase: true,
     },
 
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,

@@ -9,14 +9,14 @@ interface ICartItem {
 }
 
 export interface ICart extends Document {
-  userId: Types.ObjectId;
+  user: Types.ObjectId;
   storeId: Types.ObjectId;
   items: ICartItem[];
 }
 
 const cartSchema = new Schema<ICart>(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       index: true,
@@ -61,6 +61,6 @@ const cartSchema = new Schema<ICart>(
 );
 
 // one cart per store per user
-cartSchema.index({ userId: 1, storeId: 1 }, { unique: true });
+cartSchema.index({ user: 1, storeId: 1 }, { unique: true });
 
 export const CartModel = model<ICart>("Cart", cartSchema);

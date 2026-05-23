@@ -17,7 +17,7 @@ export const createAddress = asyncHandler(
 
     // limit number of addresses per user
     const count = await AddressModel.countDocuments({
-      userId: req.user?._id,
+      user: req.user?._id,
     }).lean();
 
     if (count >= 3) {
@@ -26,7 +26,7 @@ export const createAddress = asyncHandler(
 
     // create new address for logged-in user
     const createdAddress = await AddressModel.create({
-      userId: req.user?._id,
+      user: req.user?._id,
       ...parsedAddress.data,
     });
 
@@ -54,7 +54,7 @@ export const getUserAddresses = asyncHandler(
 
     // get all addresses of logged-in user
     const addresses = await AddressModel.find({
-      userId: req.user._id,
+      user: req.user._id,
     })
       .sort({
         isDefault: -1,
@@ -92,7 +92,7 @@ export const updateAddress = asyncHandler(
     // find address
     const existingAddress = await AddressModel.findOne({
       _id: addressId,
-      userId: req.user._id,
+      user: req.user._id,
     })
       .select("_id")
       .lean();
@@ -132,7 +132,7 @@ export const setDefaultAddress = asyncHandler(
     // find address
     const address = await AddressModel.findOne({
       _id: addressId,
-      userId: req.user._id,
+      user: req.user._id,
     })
       .select("_id")
       .lean();
@@ -166,7 +166,7 @@ export const deleteAddress = asyncHandler(
     // find address
     const address = await AddressModel.findOne({
       _id: addressId,
-      userId: req.user._id,
+      user: req.user._id,
     });
 
     if (!address) {
@@ -182,7 +182,7 @@ export const deleteAddress = asyncHandler(
     ) {
       // find another address
       const nextAddress = await AddressModel.findOne({
-        userId: req.user._id,
+        user: req.user._id,
       }).sort({
         createdAt: -1,
       });
