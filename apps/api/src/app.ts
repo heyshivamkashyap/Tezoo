@@ -9,9 +9,10 @@ import { env } from "./config/env";
 import { errorHandler } from "./middleware/error.middleware";
 
 // import routes
+import { rateLimitMiddleware } from "./middleware/rate-limit.middleware";
 import healthRoutes from "./routes/health.route";
 import authRoutes from "./routes/auth.routes";
-import { rateLimitMiddleware } from "./middleware/rate-limit.middleware";
+import addressRoutes from "./routes/address.route";
 
 const app: Express = express();
 
@@ -48,6 +49,7 @@ app.use(compression());
 // routes declaration
 app.use("/api/v1/healthcheck", healthRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/address", addressRoutes);
 
 // Global Error Handler (Must be the last middleware)
 app.use(errorHandler);
