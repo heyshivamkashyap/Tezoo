@@ -13,6 +13,7 @@ import { rateLimitMiddleware } from "./middleware/rate-limit.middleware";
 import healthRoutes from "./routes/health.route";
 import authRoutes from "./routes/auth.routes";
 import addressRoutes from "./routes/address.route";
+import storeRoutes from "./routes/store.routes";
 
 const app: Express = express();
 
@@ -50,6 +51,7 @@ app.use(compression());
 app.use("/api/v1/healthcheck", healthRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/address", addressRoutes);
+app.use("/api/v1/store", storeRoutes);
 
 // Global Error Handler (Must be the last middleware)
 app.use(errorHandler);

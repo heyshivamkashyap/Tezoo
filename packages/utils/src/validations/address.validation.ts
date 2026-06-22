@@ -1,6 +1,6 @@
 import z from "zod";
 // location schema
-const locationSchema = z.object({
+export const locationSchema = z.object({
   type: z.literal("Point"),
   coordinates: z.array(z.number()).length(2, "Coordinates must be [lng, lat]"),
 });
