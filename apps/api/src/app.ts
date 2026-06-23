@@ -14,6 +14,7 @@ import healthRoutes from "./routes/health.route";
 import authRoutes from "./routes/auth.routes";
 import addressRoutes from "./routes/address.route";
 import storeRoutes from "./routes/store.routes";
+import categoryRoutes from "./routes/category.route";
 
 const app: Express = express();
 
@@ -52,6 +53,7 @@ app.use("/api/v1/healthcheck", healthRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/address", addressRoutes);
 app.use("/api/v1/store", storeRoutes);
+app.use("/api/v1/category", categoryRoutes);
 
 // Global Error Handler (Must be the last middleware)
 app.use(errorHandler);
