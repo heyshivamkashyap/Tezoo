@@ -101,7 +101,7 @@ const storeSchema = new Schema<IStore>(
   },
 );
 
-storeSchema.index({ location: "2dsphere" });
+storeSchema.index({ geoLocation: "2dsphere" });
 storeSchema.index({ status: 1 });
 
 export const StoreModel = model<IStore>("Store", storeSchema);
