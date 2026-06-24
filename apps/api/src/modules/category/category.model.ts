@@ -1,9 +1,10 @@
 import { Schema, model, Types, Document, HydratedDocument } from "mongoose";
+import { imageSchema, imageSchemaType } from "../common/image.schema";
 
 export interface ICategory extends Document {
   name: string;
   slug: string;
-  image: string;
+  image: imageSchemaType;
 
   // null = main category
   // has value = subcategory
@@ -24,9 +25,7 @@ const categorySchema = new Schema<ICategory>(
       lowercase: true,
       trim: true,
     },
-    image: {
-      type: String,
-    },
+    image: imageSchema,
     parentId: {
       type: Types.ObjectId,
       ref: "Category",

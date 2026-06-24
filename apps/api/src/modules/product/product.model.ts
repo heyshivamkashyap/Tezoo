@@ -1,4 +1,5 @@
 import { Schema, model, Types, Document, HydratedDocument } from "mongoose";
+import { imageSchema, imageSchemaType } from "../common/image.schema";
 
 export interface IProduct extends Document {
   name: string;
@@ -6,7 +7,7 @@ export interface IProduct extends Document {
   description?: string;
   brand: string;
   categoryId: Types.ObjectId;
-  images: string[];
+  images: imageSchemaType[];
   tags?: string[]; // for seo
   isActive: boolean;
 }
@@ -35,7 +36,7 @@ const productSchema = new Schema<IProduct>(
       ref: "Category",
     },
     images: {
-      type: [String],
+      type: [imageSchema],
       required: true,
     },
     tags: {

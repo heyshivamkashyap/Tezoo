@@ -7,7 +7,10 @@ import {
 } from "@repo/utils";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
-import { uploadToCloudinary } from "../services/cloudinary.service";
+import {
+  deleteFromCloudinary,
+  uploadToCloudinary,
+} from "../services/cloudinary.service";
 import slugify from "slugify";
 import { CategoryModel } from "../modules/category/category.model";
 
@@ -41,7 +44,10 @@ export const createCategory = asyncHandler(
       throw new ApiError(409, "Category already exists");
     }
 
-    const { secure_url } = await uploadToCloudinary(req.file.path, "category");
+    const { secure_url, public_id } = await uploadToCloudinary(
+      req.file.path,
+      "category",
+    );
 
     if (!secure_url) {
       throw new ApiError(500, "Failed to upload category image");
@@ -50,7 +56,10 @@ export const createCategory = asyncHandler(
     const category = await CategoryModel.create({
       name,
       slug,
-      image: secure_url,
+      image: {
+        url: secure_url,
+        publicId: public_id,
+      },
       parentId: parentId || null,
       isActive,
     });
@@ -87,7 +96,10 @@ export const updateCategory = asyncHandler(
     // Add internal fields used during update
     const updatePayload: UpdateCategoryType & {
       slug?: string;
-      image?: string;
+      image?: {
+        url: string;
+        publicId: string;
+      };
     } = validatedData.data;
 
     // Generate slug if name is updated
@@ -125,15 +137,20 @@ export const updateCategory = asyncHandler(
         throw new ApiError(500, "Failed to upload category image");
       }
 
-      updatePayload.image = uploadedImage.secure_url;
+      await deleteFromCloudinary(String(category.image.publicId));
+
+      updatePayload.image = {
+        url: uploadedImage.secure_url,
+        publicId: uploadedImage.public_id,
+      };
     }
 
     const updatedCategory = await CategoryModel.findByIdAndUpdate(
       categoryId,
       updatePayload,
       {
-        new: true,
         runValidators: true,
+        returnDocument: "after",
       },
     );
 

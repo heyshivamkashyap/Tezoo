@@ -2,6 +2,7 @@ import { Schema, model, Types, Document, HydratedDocument } from "mongoose";
 import bcrypt from "bcryptjs";
 import { env } from "../../config/env";
 import jwt from "jsonwebtoken";
+import { imageSchema, imageSchemaType } from "../common/image.schema";
 
 export type UserRole =
   | "customer"
@@ -21,7 +22,7 @@ export interface IUser extends Document {
   roles: UserRole[];
   status: UserStatus;
 
-  profileImage?: string;
+  profileImage?: imageSchemaType;
 
   defaultAddress?: Types.ObjectId;
 
@@ -88,7 +89,7 @@ const userSchema = new Schema<IUser>(
     },
 
     profileImage: {
-      type: String,
+      type: imageSchema,
     },
 
     defaultAddress: {

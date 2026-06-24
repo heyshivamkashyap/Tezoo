@@ -15,3 +15,15 @@ export const uploadToCloudinary = async (
     throw new ApiError(500, "Failed to upload file to Cloudinary");
   }
 };
+
+export const deleteFromCloudinary = async (publicId: string) => {
+  try {
+    if (!publicId?.trim()) {
+      throw new ApiError(400, "Public ID is required");
+    }
+
+    await cloudinary.uploader.destroy(publicId);
+  } catch (error) {
+    throw new ApiError(500, "Failed to delete file from Cloudinary");
+  }
+};
