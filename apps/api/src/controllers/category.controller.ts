@@ -165,3 +165,77 @@ export const updateCategory = asyncHandler(
       );
   },
 );
+
+export const deleteCategory = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { categoryId } = req.params;
+
+    // check category exists
+    const category =
+      await CategoryModel.findById(categoryId).select("_id image");
+
+    if (!category) {
+      throw new ApiError(404, "Category not found");
+    }
+
+    // prevent deletion if category has subcategories
+    const subCategoryExists = await CategoryModel.exists({
+      parentId: categoryId,
+    });
+
+    if (subCategoryExists) {
+      throw new ApiError(
+        400,
+        "Cannot delete category because it contains subcategories",
+      );
+    }
+
+    // delete category image from cloudinary
+    await deleteFromCloudinary(String(category.image.publicId));
+
+    await category.deleteOne();
+
+    return res.json(
+      new ApiResponse(200, null, "Category deleted successfully"),
+    );
+  },
+);
+
+export const getCategories = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const categories = await CategoryModel.find({
+      parentId: null,
+      isActive: true,
+    })
+      .select("_id name slug image")
+      .lean();
+
+    return res.json(
+      new ApiResponse(200, categories, "Categories fetched successfully"),
+    );
+  },
+);
+
+export const getSubCategories = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { categoryId } = req.params;
+
+    // check parent category exists
+    const category = await CategoryModel.findById(categoryId);
+
+    if (!category) {
+      throw new ApiError(404, "Category not found");
+    }
+
+    const subCategories = await CategoryModel.find({
+      parentId: categoryId,
+      isActive: true,
+    })
+      .select("_id name slug image")
+      .lean();
+
+    return res.json(
+      new ApiResponse(200, subCategories, "Subcategories fetched successfully"),
+    );
+  },
+);

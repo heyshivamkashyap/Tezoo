@@ -3,6 +3,9 @@ import { authenticate } from "../middleware/authenticate.middleware";
 import { upload } from "../middleware/multer.middleware";
 import {
   createCategory,
+  deleteCategory,
+  getCategories,
+  getSubCategories,
   updateCategory,
 } from "../controllers/category.controller";
 
@@ -22,5 +25,13 @@ router.patch(
   upload.single("image"),
   updateCategory,
 );
+
+router.delete("/delete/:categoryId", authenticate(["admin"]), deleteCategory);
+
+// get all main categories
+router.get("/get-categories", getCategories);
+
+// get all sub categories
+router.get("/get-sub-categories/:categoryId", getSubCategories);
 
 export default router;
