@@ -16,6 +16,7 @@ import addressRoutes from "./routes/address.route";
 import storeRoutes from "./routes/store.routes";
 import categoryRoutes from "./routes/category.route";
 import productRoutes from "./routes/product.route";
+import productVariantRoutes from "./routes/product-variant.route";
 
 const app: Express = express();
 
@@ -56,6 +57,7 @@ app.use("/api/v1/address", addressRoutes);
 app.use("/api/v1/store", storeRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/product-variant", productVariantRoutes);
 
 // Global Error Handler (Must be the last middleware)
 app.use(errorHandler);
