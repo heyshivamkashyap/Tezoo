@@ -3,6 +3,7 @@ import "./globals.css";
 import { fontVariables } from "@/config/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import TopLoader from "@/components/top-loader";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -28,6 +29,7 @@ export default function RootLayout({
         >
           <TopLoader />
           {children}
+          <Toaster position="top-right" closeButton />
         </ThemeProvider>
       </body>
     </html>
