@@ -1,4 +1,4 @@
-import { Schema, model, Types, Document, HydratedDocument } from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
 
 export type AddressType = "home" | "work" | "other";
 

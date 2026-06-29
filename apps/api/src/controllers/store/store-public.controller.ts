@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiError } from "../../utils/ApiError";
 import { StoreModel } from "../../modules/store/store.model";
-import { createStoreSchema, updateStoreSchema } from "@repo/utils";
 import { ApiResponse } from "../../utils/ApiResponse";
 
 export const getNearbyStore = asyncHandler(
@@ -34,8 +33,6 @@ export const getNearbyStore = asyncHandler(
     })
       .select("_id")
       .lean();
-
-    console.log("store", store);
 
     if (store) {
       return res

@@ -10,5 +10,5 @@ export const imageSchema = new Schema(
 
 export type imageSchemaType = {
   url: string;
-  publicId: String;
+  publicId: string;
 };

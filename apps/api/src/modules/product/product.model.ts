@@ -1,4 +1,4 @@
-import { Schema, model, Types, Document, HydratedDocument } from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
 import { imageSchema, imageSchemaType } from "../common/image.schema";
 
 export interface IProduct extends Document {

@@ -1,4 +1,4 @@
-import type { CookieOptions, Request, Response, NextFunction } from "express";
+import type { CookieOptions, Request, Response } from "express";
 import { registerSchema, loginSchema } from "@repo/utils";
 import { ApiError } from "../utils/ApiError";
 import { UserModel } from "../modules/user/user.model";

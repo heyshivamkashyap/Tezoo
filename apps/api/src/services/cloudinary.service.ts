@@ -12,6 +12,7 @@ export const uploadToCloudinary = async (
       folder,
     });
   } catch (error) {
+    console.error("uploadToCloudinary", error);
     throw new ApiError(500, "Failed to upload file to Cloudinary");
   }
 };
@@ -24,6 +25,7 @@ export const deleteFromCloudinary = async (publicId: string) => {
 
     await cloudinary.uploader.destroy(publicId);
   } catch (error) {
+    console.error("deleteFromCloudinary", error);
     throw new ApiError(500, "Failed to delete file from Cloudinary");
   }
 };
