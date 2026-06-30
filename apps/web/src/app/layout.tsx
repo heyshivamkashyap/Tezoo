@@ -4,6 +4,7 @@ import { fontVariables } from "@/config/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import TopLoader from "@/components/top-loader";
 import { Toaster } from "@/components/ui/sonner";
+import AppProvider from "@/components/app-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -22,15 +23,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fontVariables}`} suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          disableTransitionOnChange
-        >
-          <TopLoader />
-          {children}
-          <Toaster position="top-right" closeButton />
-        </ThemeProvider>
+        <AppProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            disableTransitionOnChange
+          >
+            <TopLoader />
+            {children}
+            <Toaster position="top-right" closeButton />
+          </ThemeProvider>
+        </AppProvider>
       </body>
     </html>
   );

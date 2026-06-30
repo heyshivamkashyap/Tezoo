@@ -1,4 +1,5 @@
 import { LocationManualDrawer } from "@/components/location/LocationManualDrawer";
+import Navbar from "./_components/navbar";
 
 export default function PublicLayout({
   children,
@@ -7,6 +8,7 @@ export default function PublicLayout({
 }>) {
   return (
     <>
+      <Navbar />
       {children}
       <LocationManualDrawer />
     </>

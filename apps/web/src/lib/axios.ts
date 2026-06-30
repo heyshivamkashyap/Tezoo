@@ -9,6 +9,22 @@ export const api = axios.create({
   },
 });
 
+// Add Authorization header to every request
+api.interceptors.request.use(
+  (config) => {
+    // Change this based on where you store the token
+    const token = localStorage.getItem("accessToken");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+// Handle API errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
