@@ -12,6 +12,7 @@ import { errorHandler } from "./middleware/error.middleware";
 import { rateLimitMiddleware } from "./middleware/rate-limit.middleware";
 import healthRoutes from "./routes/health.route";
 import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.route";
 import addressRoutes from "./routes/address.route";
 import storeRoutes from "./routes/store.routes";
 import categoryRoutes from "./routes/category.route";
@@ -53,6 +54,7 @@ app.use(compression());
 // routes declaration
 app.use("/api/v1/healthcheck", healthRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/address", addressRoutes);
 app.use("/api/v1/store", storeRoutes);
 app.use("/api/v1/category", categoryRoutes);

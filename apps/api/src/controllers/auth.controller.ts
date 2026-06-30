@@ -5,12 +5,17 @@ import { UserModel } from "../modules/user/user.model";
 import { env } from "../config/env";
 import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
+import jwt from "jsonwebtoken";
 
 // Secure cookie configuration
 const cookieOptions: CookieOptions = {
   httpOnly: true,
   secure: env.NODE_ENV === "production",
 };
+
+interface RefreshTokenPayload {
+  id: string;
+}
 
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
@@ -130,3 +135,50 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
     .clearCookie("refreshToken", cookieOptions)
     .json(new ApiResponse(200, null, "Logged out successfully"));
 });
+
+export const refreshAccessToken = asyncHandler(
+  async (req: Request, res: Response) => {
+    const incomingRefreshToken =
+      req.cookies?.refreshToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
+
+    if (!incomingRefreshToken) {
+      throw new ApiError(401, "Refresh token is required");
+    }
+
+    let decoded: RefreshTokenPayload;
+
+    try {
+      decoded = jwt.verify(
+        incomingRefreshToken,
+        env.REFRESH_TOKEN_SECRET,
+      ) as RefreshTokenPayload;
+    } catch (error) {
+      console.log("verify jwt error", error);
+      throw new ApiError(401, "Invalid or expired refresh token");
+    }
+
+    const user = await UserModel.findById(decoded.id);
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    const { accessToken, refreshToken } = user.generateTokens();
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, cookieOptions)
+      .cookie("refreshToken", refreshToken, cookieOptions)
+      .json(
+        new ApiResponse(
+          200,
+          {
+            accessToken,
+            refreshToken,
+          },
+          "Access token refreshed successfully",
+        ),
+      );
+  },
+);
