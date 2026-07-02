@@ -1,12 +1,16 @@
 "use client";
 
+import { LogOutConfirm } from "@/app/(auth)/_components/log-out-confirm";
+import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/redux/hooks";
+import { useState } from "react";
 
 export default function Navbar() {
   const { user, loading } = useAppSelector((state) => state.user);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav>
+    <nav className="flex items-center justify-between">
       {loading ? (
         <div>Loading...</div>
       ) : user ? (
@@ -14,6 +18,9 @@ export default function Navbar() {
       ) : (
         <button>Login</button>
       )}
+
+      <Button onClick={() => setIsOpen(!isOpen)}>Logout</Button>
+      <LogOutConfirm open={isOpen} onOpenChange={setIsOpen} />
     </nav>
   );
 }
