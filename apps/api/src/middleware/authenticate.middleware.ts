@@ -27,7 +27,7 @@ export const authenticate = (allowedRoles: UserRole[] = ["customer"]) =>
     try {
       decoded = jwt.verify(accessToken, env.ACCESS_TOKEN_SECRET) as JwtPayload;
     } catch {
-      throw new ApiError(401, "Invalid or expired access token");
+      throw new ApiError(401, "ACCESS_TOKEN_EXPIRED");
     }
 
     const user = await UserModel.findById(decoded.id).select("-refreshToken");
