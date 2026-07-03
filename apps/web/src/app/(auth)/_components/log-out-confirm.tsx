@@ -34,12 +34,15 @@ export function LogOutConfirm({ open, onOpenChange }: SignOutConfirmProps) {
       try {
         const res = await logoutUser();
 
+        // Clear Redux state regardless of API result
+        dispatch(logout());
+
         if (!res.data.success) {
           setError(res.data.message ?? "Logout failed");
-          dispatch(logout());
           return;
         }
 
+        onOpenChange(false);
         router.replace("/login");
       } catch (err) {
         setError((err as Error).message);

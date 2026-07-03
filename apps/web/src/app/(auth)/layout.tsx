@@ -1,18 +1,9 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import AuthGuard from "./_components/auth-guard";
 
 export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-
-  const accessToken = cookieStore.get("accessToken");
-
-  if (accessToken) {
-    redirect("/");
-  }
-
-  return children;
+  return <AuthGuard>{children}</AuthGuard>;
 }

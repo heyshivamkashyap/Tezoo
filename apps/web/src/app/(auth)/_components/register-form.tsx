@@ -142,10 +142,8 @@ export default function RegisterForm() {
         <p className="text-muted-foreground w-full text-sm">
           Already have an account?
           <Button asChild variant="link" className="ml-1 px-1">
-            <Link
-              href={redirect ? `/sign-in?redirect=${redirect}` : "/sign-in"}
-            >
-              Sign In
+            <Link href={redirect ? `/login?redirect=${redirect}` : "/login"}>
+              Log In
             </Link>
           </Button>
         </p>

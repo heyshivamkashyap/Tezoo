@@ -135,7 +135,7 @@ export default function LoginForm() {
           Don&#39;t have an account?{" "}
           <Button asChild variant="link" className="ml-1">
             <Link
-              href={redirect ? `/sign-up?redirect=${redirect}` : "/sign-up"}
+              href={redirect ? `/register?redirect=${redirect}` : "/register"}
             >
               Create Account
             </Link>
