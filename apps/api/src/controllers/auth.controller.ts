@@ -8,10 +8,18 @@ import { asyncHandler } from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 
 // Secure cookie configuration
-const cookieOptions: CookieOptions = {
+const accessTokenCookieOptions: CookieOptions = {
   httpOnly: true,
   secure: env.NODE_ENV === "production",
   sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 1 * 24 * 60 * 60 * 1000, // 15 minutes
+};
+
+const refreshTokenCookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: env.NODE_ENV === "production",
+  sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
 interface RefreshTokenPayload {
@@ -56,8 +64,8 @@ export const registerUser = asyncHandler(
     // Send response response with cookies + tokens
     return res
       .status(201)
-      .cookie("accessToken", accessToken, cookieOptions)
-      .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("accessToken", accessToken, accessTokenCookieOptions)
+      .cookie("refreshToken", refreshToken, refreshTokenCookieOptions)
       .json(
         new ApiResponse(
           201,
@@ -114,8 +122,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   // Send response response with cookies + tokens
   return res
     .status(200)
-    .cookie("accessToken", accessToken, cookieOptions)
-    .cookie("refreshToken", refreshToken, cookieOptions)
+    .cookie("accessToken", accessToken, accessTokenCookieOptions)
+    .cookie("refreshToken", refreshToken, refreshTokenCookieOptions)
     .json(
       new ApiResponse(
         200,
@@ -132,8 +140,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
   return res
     .status(200)
-    .clearCookie("accessToken", cookieOptions)
-    .clearCookie("refreshToken", cookieOptions)
+    .clearCookie("accessToken", accessTokenCookieOptions)
+    .clearCookie("refreshToken", refreshTokenCookieOptions)
     .json(new ApiResponse(200, null, "Logged out successfully"));
 });
 
@@ -169,8 +177,8 @@ export const refreshAccessToken = asyncHandler(
 
     return res
       .status(200)
-      .cookie("accessToken", accessToken, cookieOptions)
-      .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("accessToken", accessToken, accessTokenCookieOptions)
+      .cookie("refreshToken", refreshToken, refreshTokenCookieOptions)
       .json(
         new ApiResponse(
           200,
