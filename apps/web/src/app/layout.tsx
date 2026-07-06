@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import TopLoader from "@/components/top-loader";
 import { Toaster } from "@/components/ui/sonner";
 import AppProvider from "@/components/app-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: {
@@ -30,7 +31,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <TopLoader />
-            {children}
+            <TooltipProvider>{children}</TooltipProvider>
             <Toaster position="top-right" closeButton />
           </ThemeProvider>
         </AppProvider>
