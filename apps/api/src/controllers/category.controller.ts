@@ -16,7 +16,12 @@ import { CategoryModel } from "../modules/category/category.model";
 
 export const createCategory = asyncHandler(
   async (req: Request, res: Response) => {
-    const validatedData = createCategorySchema.safeParse(req.body);
+    const body = {
+      ...req.body,
+      isActive: req.body.isActive === "true",
+    };
+
+    const validatedData = createCategorySchema.safeParse(body);
 
     if (!validatedData.success) {
       throw new ApiError(400, "Invalid category data");
@@ -205,9 +210,8 @@ export const getCategories = asyncHandler(
   async (_req: Request, res: Response) => {
     const categories = await CategoryModel.find({
       parentId: null,
-      isActive: true,
     })
-      .select("_id name slug image")
+      .select("_id name slug image isActive")
       .lean();
 
     return res.json(
