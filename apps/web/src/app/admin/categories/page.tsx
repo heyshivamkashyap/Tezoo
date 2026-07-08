@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   title: "Categories",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function Page() {
   return (
     <Suspense fallback={<CategorySkeleton />}>

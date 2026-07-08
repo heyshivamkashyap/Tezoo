@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: "Create New Category",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const res = await getMainCategory();
   const categories = res.data.data;
