@@ -25,15 +25,11 @@ import { LoadingButton } from "@/components/ui/loading-btn";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createCategory } from "@/services/admin/category/category.service";
-import { MainCategory } from "@/services/category/category.types";
 import { useState, useTransition } from "react";
 import { ImageDropzone } from "@/components/image-dropzone";
+import { Category } from "@/types/category";
 
-export function CreateCategoryForm({
-  categories,
-}: {
-  categories: MainCategory[];
-}) {
+export function CreateCategoryForm({ categories }: { categories: Category[] }) {
   const [image, setImage] = useState<File | null>(null);
 
   const [isPending, startTransition] = useTransition();
@@ -59,10 +55,11 @@ export function CreateCategoryForm({
   const onSubmit = (data: CreateCategoryType) => {
     startTransition(async () => {
       const formData = new FormData();
+      const hasParent = !!data.parentId && data.parentId !== "none";
 
       formData.append("name", data.name);
 
-      if (data.parentId && data.parentId !== "none") {
+      if (hasParent && data.parentId) {
         formData.append("parentId", data.parentId);
       }
 
@@ -81,7 +78,12 @@ export function CreateCategoryForm({
         }
 
         toast.success(res.data.message);
-        router.push("/admin/categories");
+
+        router.push(
+          hasParent
+            ? `/admin/categories/${data.parentId}`
+            : "/admin/categories",
+        );
       } catch (err) {
         toast.error((err as Error).message);
       }

@@ -225,7 +225,8 @@ export const getSubCategories = asyncHandler(
     const { categoryId } = req.params;
 
     // check parent category exists
-    const category = await CategoryModel.findById(categoryId);
+    const category =
+      await CategoryModel.findById(categoryId).select("_id name");
 
     if (!category) {
       throw new ApiError(404, "Category not found");
@@ -235,11 +236,18 @@ export const getSubCategories = asyncHandler(
       parentId: categoryId,
       isActive: true,
     })
-      .select("_id name slug image")
+      .select("_id name slug image isActive")
       .lean();
 
     return res.json(
-      new ApiResponse(200, subCategories, "Subcategories fetched successfully"),
+      new ApiResponse(
+        200,
+        {
+          parentCategory: category,
+          subCategories,
+        },
+        "Subcategories fetched successfully",
+      ),
     );
   },
 );

@@ -1,6 +1,6 @@
-import { ImageAsset } from "@/types/image-asset";
+import { ImageAsset } from "./image-asset";
 
-export interface MainCategory {
+export interface Category {
   _id: string;
   name: string;
   slug: string;

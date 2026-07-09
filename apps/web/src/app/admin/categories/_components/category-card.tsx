@@ -4,20 +4,24 @@ import Link from "next/link";
 import { ArrowRightIcon, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 import { DeleteCategoryDrawer } from "./delete-category-drawer";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { MainCategory } from "@/services/category/category.types";
+import { Category } from "@/types/category";
 
 interface CategoryCardProps {
-  category: MainCategory;
+  category: Category;
+  isSubCategory?: boolean;
 }
 
-export function CategoryCard({ category }: CategoryCardProps) {
-  const [isOepn, setIsOepn] = useState(false);
+export function CategoryCard({
+  category,
+  isSubCategory = false,
+}: CategoryCardProps) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -28,7 +32,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
           variant="destructive"
           className="absolute top-3 right-3 z-10 h-8 w-8 rounded-full shadow-md"
           title="Delete category"
-          onClick={() => setIsOepn(!isOepn)}
+          onClick={() => setIsOpen(!isOpen)}
         >
           <Trash2 />
         </Button>
@@ -56,12 +60,18 @@ export function CategoryCard({ category }: CategoryCardProps) {
 
         <CardContent className="space-y-4 p-3">
           <div className="space-y-0.5">
-            <Link
-              href={`/admin/categories/${category._id}`}
-              className="line-clamp-1 text-base font-medium hover:underline"
-            >
-              {category.name}
-            </Link>
+            {isSubCategory ? (
+              <CardTitle className="line-clamp-1 text-base font-medium">
+                {category.name}
+              </CardTitle>
+            ) : (
+              <Link
+                href={`/admin/categories/${category._id}`}
+                className="line-clamp-1 text-base font-medium hover:underline"
+              >
+                {category.name}
+              </Link>
+            )}
 
             <p className="text-muted-foreground line-clamp-1 text-sm">
               Category Slug: {category.slug}
@@ -83,8 +93,8 @@ export function CategoryCard({ category }: CategoryCardProps) {
         id={category._id}
         name={category.name}
         image={category.image.url}
-        open={isOepn}
-        onOpenChange={setIsOepn}
+        open={isOpen}
+        onOpenChange={setIsOpen}
       />
     </>
   );
