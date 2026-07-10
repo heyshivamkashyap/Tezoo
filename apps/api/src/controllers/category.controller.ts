@@ -220,13 +220,30 @@ export const getCategories = asyncHandler(
   },
 );
 
+export const getCategoryById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { categoryId } = req.params;
+
+    const category = await CategoryModel.findById(categoryId).lean();
+
+    if (!category) {
+      throw new ApiError(404, "Category not found");
+    }
+
+    return res.json(
+      new ApiResponse(200, category, "Categories fetched successfully"),
+    );
+  },
+);
+
 export const getSubCategories = asyncHandler(
   async (req: Request, res: Response) => {
     const { categoryId } = req.params;
 
     // check parent category exists
-    const category =
-      await CategoryModel.findById(categoryId).select("_id name");
+    const category = await CategoryModel.findById(categoryId)
+      .select("_id name")
+      .lean();
 
     if (!category) {
       throw new ApiError(404, "Category not found");

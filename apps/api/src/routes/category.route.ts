@@ -5,6 +5,7 @@ import {
   createCategory,
   deleteCategory,
   getCategories,
+  getCategoryById,
   getSubCategories,
   updateCategory,
 } from "../controllers/category.controller";
@@ -30,6 +31,13 @@ router.delete("/delete/:categoryId", authenticate(["admin"]), deleteCategory);
 
 // get all main categories
 router.get("/get-categories", getCategories);
+
+// get category by id
+router.get(
+  "/get-category/:categoryId",
+  authenticate(["admin"]),
+  getCategoryById,
+);
 
 // get all sub categories
 router.get("/get-sub-categories/:categoryId", getSubCategories);
