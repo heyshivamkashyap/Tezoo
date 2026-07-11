@@ -11,3 +11,6 @@ export const deleteCategory = (id: string) =>
 
 export const getSubcategories = (id: string) =>
   api.get<ApiResponse<SubCategoriesData>>(`/category/get-sub-categories/${id}`);
+
+export const updateCategory = (id: string, data: FormData) =>
+  api.patch<ApiResponse>(`/category/update/${id}`, data);

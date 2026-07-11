@@ -5,5 +5,6 @@ export interface Category {
   name: string;
   slug: string;
   image: ImageAsset;
+  parentId: string | null;
   isActive: boolean;
 }

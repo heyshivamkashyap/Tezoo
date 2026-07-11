@@ -14,7 +14,9 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,6 +39,9 @@ interface NavMainProps {
 
 export function NavMain({ sidebarGroupLabel, items }: NavMainProps) {
   const pathname = usePathname();
+
+  const { toggleSidebar } = useSidebar();
+  const isMobile = useIsMobile();
 
   const isSectionActive = (item: NavItem) =>
     item.items?.some(
@@ -68,7 +73,10 @@ export function NavMain({ sidebarGroupLabel, items }: NavMainProps) {
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuSubItem
+                      key={subItem.title}
+                      onClick={isMobile ? toggleSidebar : undefined}
+                    >
                       <SidebarMenuSubButton asChild>
                         <Link href={subItem.url}>
                           <span>{subItem.title}</span>
