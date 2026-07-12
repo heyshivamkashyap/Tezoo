@@ -1,5 +1,5 @@
 import { LocationManualDrawer } from "@/components/location/LocationManualDrawer";
-import Navbar from "./_components/navbar";
+import Navbar from "./_components/navbar/navbar";
 
 export default function PublicLayout({
   children,
