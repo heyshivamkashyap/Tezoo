@@ -1,5 +1,6 @@
 import { LocationManualDrawer } from "@/components/location/LocationManualDrawer";
 import Navbar from "./_components/navbar/navbar";
+import { Suspense } from "react";
 
 export default function PublicLayout({
   children,
@@ -8,7 +9,9 @@ export default function PublicLayout({
 }>) {
   return (
     <>
-      <Navbar />
+      <Suspense>
+        <Navbar />
+      </Suspense>
       {children}
       <LocationManualDrawer />
     </>
