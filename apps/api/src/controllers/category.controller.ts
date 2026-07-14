@@ -268,3 +268,94 @@ export const getSubCategories = asyncHandler(
     );
   },
 );
+
+export const getHomeCategories = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const categories = await CategoryModel.aggregate([
+      // Get only active parent (main) categories
+      {
+        $match: {
+          parentId: null,
+          isActive: true,
+        },
+      },
+
+      // Find the first active subcategory for each parent category
+      {
+        $lookup: {
+          from: "categories", // Self join
+
+          // Pass the current category's _id to the lookup pipeline
+          let: {
+            categoryId: "$_id",
+          },
+
+          pipeline: [
+            // Match active subcategories belonging to the current category
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$parentId", "$$categoryId"],
+                },
+                isActive: true,
+              },
+            },
+
+            // Get the oldest created subcategory
+            {
+              $sort: {
+                createdAt: 1,
+              },
+            },
+
+            // Keep only the default subcategory
+            {
+              $limit: 1,
+            },
+
+            // Return only the required fields
+            {
+              $project: {
+                _id: 1,
+                slug: 1,
+              },
+            },
+          ],
+
+          // Store the result as an array
+          as: "defaultSubCategory",
+        },
+      },
+
+      // Convert the subcategory array into a single object
+      {
+        $unwind: {
+          path: "$defaultSubCategory",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      // Return only the fields needed by the frontend
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          slug: 1,
+          image: 1,
+          defaultSubCategory: 1,
+        },
+      },
+
+      // Sort main categories by creation date
+      {
+        $sort: {
+          createdAt: 1,
+        },
+      },
+    ]);
+
+    return res.json(
+      new ApiResponse(200, categories, "Home categories fetched successfully"),
+    );
+  },
+);

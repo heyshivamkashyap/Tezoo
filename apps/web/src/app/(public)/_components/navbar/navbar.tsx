@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { NavLocation } from "./navbar-location";
 import { NavSearch } from "./navbar-search";
+import { Suspense } from "react";
 
 export default function Navbar() {
   const { user, loading } = useAppSelector((state) => state.user);
@@ -35,7 +36,9 @@ export default function Navbar() {
 
           {/* Search */}
           <div className="flex-1">
-            <NavSearch />
+            <Suspense>
+              <NavSearch />
+            </Suspense>
           </div>
 
           <div className="flex items-center gap-3">
@@ -86,7 +89,9 @@ export default function Navbar() {
           </div>
 
           {/* Search */}
-          <NavSearch />
+          <Suspense>
+            <NavSearch />
+          </Suspense>
         </div>
       </div>
     </header>
