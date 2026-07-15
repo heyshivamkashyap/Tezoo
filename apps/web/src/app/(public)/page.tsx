@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import { Category } from "./_components/category/category";
 import { CategorySkeleton } from "./_components/category/category-skeleton";
