@@ -1,6 +1,6 @@
-import AdminGuard from "./_components/admin-guard";
 import { AppSidebar } from "@/components/app-sidebar";
 import { NavItem } from "@/components/nav-main";
+import RoleGuard from "@/components/role-guard";
 import {
   SidebarInset,
   SidebarProvider,
@@ -139,7 +139,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AdminGuard>
+    <RoleGuard allowedRoles={["admin"]}>
       <SidebarProvider>
         <AppSidebar navMainItems={navMainItems} />
         <SidebarInset>
@@ -151,6 +151,6 @@ export default async function AdminLayout({
           <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
         </SidebarInset>
       </SidebarProvider>
-    </AdminGuard>
+    </RoleGuard>
   );
 }

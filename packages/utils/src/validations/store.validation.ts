@@ -23,5 +23,5 @@ export const createStoreSchema = z.object({
 export const updateStoreSchema = createStoreSchema.partial();
 
 // Types
-export type CreateStoreType = z.infer<typeof createStoreSchema>;
-export type UpdateStoreType = z.infer<typeof updateStoreSchema>;
+export type CreateStoreSchemaType = z.infer<typeof createStoreSchema>;
+export type UpdateCreateStoreSchemaType = z.infer<typeof updateStoreSchema>;
